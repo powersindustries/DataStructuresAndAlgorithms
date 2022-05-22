@@ -1,30 +1,36 @@
 #pragma once
 #include <iostream>
 
+#define DEFAULT_ARRAY_SIZE 2
 
 class DynamicArray
 {
 public:
     DynamicArray();
+    ~DynamicArray();
 
-    void PrintArrayValues(int array[], int size);
     void Print();
 
-    void Push(int data);
-    void Push(int data, int index);
+    void PushBack(int data);
+    void Emplace(int index, int data);
+    void Insert(int index, int data);
 
-    void InsertElement(int data, int index);
-
-    void Pop(int index);
+    void RemoveAt(int index);
     int Pop();
 
-    int GetValueByIndex(int index);
+    const int GetValueAt(const int index);
 
-    int Length();
+    int Size() { return m_Size; };
+
+
+private:
+    
+    void IncreaseMemory();
+
 
 public:
     int* m_Array;
-    int  m_Capacity; // How much memory space array can currently hold
-    int  m_ElementCount; // How many elements are currently saved in Array
+    int  m_Capacity; // How much memory array can currently hold
+    int  m_Size; // How many elements are currently saved in Array
 
 };

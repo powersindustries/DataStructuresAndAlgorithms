@@ -1,16 +1,12 @@
 #pragma once
 
 
-class StackNode
+struct StackNode
 {
-public:
-    StackNode(int data);
+    StackNode() : m_NextNode(nullptr), m_Data(0) {}
 
-public:
     StackNode* m_NextNode;
-    
     int m_Data;
-
 };
 
 
@@ -18,11 +14,13 @@ class Stack
 {
 public:
     Stack();
-    
+    ~Stack();
+
     void Print();
 
     void Push(int data);
     void Pop();
+
 
 public:
     StackNode* m_TopNode;
@@ -34,15 +32,17 @@ class ArrayStack
 {
 public:
     ArrayStack();
-    
-    void Display();
+    ~ArrayStack();
+
+    void Print();
 
     void Push(int data);
-    int Pop();
+    void Pop();
     int Peek();
+
 
 public:
     int* m_Array;
-    int m_Top;
+    int m_TopIndex;
 
 };

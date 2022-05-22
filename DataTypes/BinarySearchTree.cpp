@@ -5,56 +5,61 @@
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-BSTNode::BSTNode(int data)
-{
-    m_Data      = data;
-    m_LeftNode  = NULL;
-    m_RightNode = NULL;
-}
-
-
-// ----------------------------------------------------------------
-// ----------------------------------------------------------------
 BinarySearchTree::BinarySearchTree()
 {
-    m_RootNode = NULL;
+    m_RootNode = nullptr;
 }
 
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-void BinarySearchTree::PrintElements()
+BinarySearchTree::~BinarySearchTree()
 {
-    std::stack<BSTNode*> printStack;
-    BSTNode* tempNode = m_RootNode;
+    delete m_RootNode;
+}
 
-    while (tempNode != NULL || printStack.empty() == false)
+
+// ----------------------------------------------------------------
+// ----------------------------------------------------------------
+void BinarySearchTree::Print()
+{
+    BSTNode* tempNode = m_RootNode;
+    std::stack<BSTNode*> tempStack;
+
+    while (tempNode != nullptr || !tempStack.empty())
     {
-        while (tempNode != NULL)
+        if (tempNode != nullptr)
         {
-            printStack.push(tempNode);
+            tempStack.push(tempNode);
             tempNode = tempNode->m_LeftNode;
         }
+        else
+        {
+            tempNode = tempStack.top();
+            tempStack.pop();
 
-        tempNode = printStack.top();
-        std::cout << tempNode->m_LeftNode << ", ";
-        printStack.pop();
+            std::cout << tempNode->m_Data << " ";
 
-        tempNode = tempNode->m_RightNode;
+            tempNode = tempNode->m_RightNode;
+        }
+    
     }
 
+    std::cout << std::endl;
 }
 
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-void BinarySearchTree::InsertNode(int data)
+void BinarySearchTree::Insert(int data)
 {
-    BSTNode* newNode      = new BSTNode(data);
-    BSTNode* tempNode     = m_RootNode;
-    BSTNode* iteratorNode = NULL;
+    BSTNode* newNode = new BSTNode();
+    newNode->m_Data = data;
+    
+    BSTNode* tempNode = m_RootNode;
+    BSTNode* iteratorNode = nullptr;
 
-    while (tempNode != NULL)
+    while (tempNode != nullptr)
     {
         iteratorNode = tempNode;
         if (data < tempNode->m_Data)
@@ -67,7 +72,7 @@ void BinarySearchTree::InsertNode(int data)
         }
     }
 
-    if (iteratorNode == NULL)
+    if (iteratorNode == nullptr)
     {
         m_RootNode = newNode;
     }
@@ -85,17 +90,17 @@ void BinarySearchTree::InsertNode(int data)
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-void BinarySearchTree::DeleteNode(int data)
+void BinarySearchTree::Delete(int data)
 {
-    if (m_RootNode == NULL)
+    if (m_RootNode == nullptr)
     {
-        std::cout << "Tree is empty. Please insert values" << std::endl;
+        std::cout << "Tree is empty." << std::endl;
         return;
     }
 
     BSTNode* tempNode = m_RootNode;
-    BSTNode* parentNode = NULL;
-    while (tempNode != NULL)
+    BSTNode* parentNode = m_RootNode;
+    while (tempNode != nullptr)
     {
         if (data < tempNode->m_Data)
         {
@@ -109,24 +114,25 @@ void BinarySearchTree::DeleteNode(int data)
         }
         else
         {
-            if (tempNode->m_LeftNode == NULL && tempNode->m_RightNode == NULL)
+            if (tempNode->m_LeftNode == nullptr && tempNode->m_RightNode == nullptr)
             {
-                std::cout << "We are deleting a root node" << std::endl;
+                std::cout << "Deleting the root node." << std::endl;
                 if (parentNode->m_LeftNode == tempNode)
                 {
-                    parentNode->m_LeftNode = NULL;
+                    parentNode->m_LeftNode = nullptr;
                 }
                 else
                 {
-                    parentNode->m_RightNode = NULL;
+                    parentNode->m_RightNode = nullptr;
                 }
-                free(tempNode);
+
+                delete tempNode;
                 return;
             }
-            else if (tempNode->m_LeftNode == NULL || tempNode->m_RightNode == NULL)
+            else if (tempNode->m_LeftNode == nullptr || tempNode->m_RightNode == nullptr)
             {
-                std::cout << "Deleting a parent node with one child" << std::endl;
-                if (tempNode->m_LeftNode != NULL)
+                std::cout << "Deleting parent node with one child." << std::endl;
+                if (tempNode->m_LeftNode != nullptr)
                 {
                     parentNode->m_LeftNode = tempNode->m_LeftNode;
                 }
@@ -134,37 +140,43 @@ void BinarySearchTree::DeleteNode(int data)
                 {
                     parentNode->m_RightNode = tempNode->m_RightNode;
                 }
-                free(tempNode);
+
+                delete tempNode;
                 return;
             }
             else
             {
-                std::cout << "Deleting a parent Node with two children" << std::endl;
+                std::cout << "Deleting parent Node with two children." << std::endl;
 
                 // In this case we need to find the pre-order successor.
                 BSTNode* iteratorNode = tempNode->m_RightNode;
-                if (iteratorNode->m_LeftNode == NULL && iteratorNode->m_RightNode == NULL)
+                if (iteratorNode->m_LeftNode == nullptr && iteratorNode->m_RightNode == nullptr)
                 {
                     tempNode->m_Data = iteratorNode->m_Data;
-                    tempNode->m_RightNode = NULL;
-                    free(iteratorNode);
+                    tempNode->m_RightNode = nullptr;
+
+                    delete iteratorNode;
                     return;
                 }
-                else if (iteratorNode->m_LeftNode == NULL && iteratorNode->m_RightNode != NULL)
+                else if (iteratorNode->m_LeftNode == nullptr && iteratorNode->m_RightNode != nullptr)
                 {
                     tempNode->m_Data = iteratorNode->m_Data;
                     tempNode->m_RightNode = iteratorNode->m_RightNode;
-                    free(iteratorNode);
+
+                    delete iteratorNode;
                     return;
                 }
-                while (iteratorNode->m_LeftNode != NULL)
+
+                while (iteratorNode->m_LeftNode != nullptr)
                 {
                     parentNode = iteratorNode;
                     iteratorNode = iteratorNode->m_LeftNode;
                 }
+
                 tempNode->m_Data = iteratorNode->m_Data;
-                parentNode->m_LeftNode = NULL;
-                free(iteratorNode);
+                parentNode->m_LeftNode = nullptr;
+
+                delete iteratorNode;
                 return;
             }
         }
@@ -177,16 +189,16 @@ void BinarySearchTree::DeleteNode(int data)
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-bool BinarySearchTree::Lookup(int data)
+bool BinarySearchTree::Find(int data)
 {
-    if (m_RootNode == NULL)
+    if (m_RootNode == nullptr)
     {
-        std::cout << "Tree Empty please Insert values" << std::endl;
+        std::cout << "Tree Empty." << std::endl;
         return false;
     }
 
     BSTNode* tempNode = m_RootNode;
-    while (tempNode != NULL)
+    while (tempNode != nullptr)
     {
         if (tempNode->m_Data > data)
         {

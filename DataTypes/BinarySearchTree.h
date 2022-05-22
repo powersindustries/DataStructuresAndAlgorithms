@@ -1,17 +1,14 @@
 #pragma once
 
 
-class BSTNode
+struct BSTNode
 {
-public:
-    BSTNode(int data);
+    BSTNode() : m_LeftNode(nullptr), m_RightNode(nullptr), m_Data(0){}
 
-public:
     BSTNode* m_LeftNode;
     BSTNode* m_RightNode;
     
     int m_Data;
-
 };
 
 
@@ -19,13 +16,13 @@ class BinarySearchTree
 {
 public:
     BinarySearchTree();
+    ~BinarySearchTree();
 
-    void PrintElements();
+    void Print();
+    void Insert(int data);
+    void Delete(int data);
+    bool Find(int data);
 
-    void InsertNode(int data);
-    void DeleteNode(int data);
-
-    bool Lookup(int data);
 
 public:
     BSTNode* m_RootNode;

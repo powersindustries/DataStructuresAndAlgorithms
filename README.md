@@ -1,4 +1,4 @@
-# Data Types and Algorithms Cheat Sheet
+# Data Types and Algorithms
 
 ## _Overview_
 ### Data Types
@@ -30,6 +30,7 @@
 #### Dynamic Array
 - Array that allows the user to dynamically add and remove items
 - Keeps track of the array's memory capacity and element count
+- Also called a `vector`
 
 #### Linked List
 - Linear data structure that starts at a head element with each proceeding element having a pointer to the next element in the list
@@ -76,25 +77,43 @@
   - Elementary way of sorting the elements in an array, not suggested
   - Compares two values next to each other in an array. If the value on left is higher, it swaps the compared values
   - Continues this pattern until the array is sorted
-  - Fun dancing illustration of Bubble Sort: https://www.youtube.com/watch?v=lyZQPjUT5B4
+  - [Fun dancing illustration of Bubble Sort](https://www.youtube.com/watch?v=lyZQPjUT5B4)
 - Selection Sort
   - Scans the array and finds the smallest value. After finding the smallest value, the value is set to the first index in the array
   - After it is set, the first index increases by one
   - This process is repeated until the array is sorted in numeric order.
-  - Fun dancing illustration of Selection Sort: https://www.youtube.com/watch?v=Ns4TPTC8whw
+  - [Fun dancing illustration of Selection Sort](https://www.youtube.com/watch?v=Ns4TPTC8whw)
 - Insertion Sort
   - The array is split into sorted and unsorted portions
   - The values from the unsorted part are placed at the correct position into the sorted part.
-  - Fun dancing illustration of Insertion Sort: https://www.youtube.com/watch?v=ROalU379l3U
+  - [Fun dancing illustration of Insertion Sort](https://www.youtube.com/watch?v=ROalU379l3U)
 - Merge Sort
   - Divide and conquer algorithm for sorting
   - Its done by breaking up the list into single value ordered sublists
   - One by one, merge sublists and sort the new list of values
   - Repeat until one sorted list is left
-  - Fun dancing illustration of Merge Sort: https://www.youtube.com/watch?v=XaqR3G_NVoo
+  - [Fun dancing illustration of Merge Sort](https://www.youtube.com/watch?v=XaqR3G_NVoo)
 - Quick Sort
   - Divide and conquer algorithm for sorting
   - Uses a pivot point to sort list
   - Values smaller than the pivot point are moved to the left, values greater move to the right
   - After everything is on the correct side, the pivot point moves and the process is repeated until the list is fully sorted
-  - Fun dancing illustration of Quick Sort: https://www.youtube.com/watch?v=ywWBy6J5gz8
+  - [Fun dancing illustration of Quick Sort](https://www.youtube.com/watch?v=ywWBy6J5gz8)
+
+#### How to Run
+The project has been updated to use CMake as its build and packaging tool. If you have not used CMake before, feel free to check it out using the link [HERE](https://cmake.org/).
+
+1. Install CMake on your PC using the link above.
+2. Download the `DataTypesAndAlgorithms` project from GitHub.
+3. Open the project in the file explorer and open a Command Prompt from that location.
+4. With the Command Prompt open, type in the commands:
+```
+> mkdir Debug
+> cd Debug
+> cmake ..
+> cmake --build .
+```
+1. After the CMake is complete, go back to the file explorer and open the newly created `Debug` folder.
+2. Double click the Visual Studio solution file CMake just created.
+3. In Visual Studio's solution explorer, set the `DataTypesAndAlgorithms` solution as the target solution.
+4. Rebuild and run.

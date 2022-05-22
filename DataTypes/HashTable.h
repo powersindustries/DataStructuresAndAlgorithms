@@ -1,13 +1,11 @@
 #pragma once
 #include <iostream>
 
+#define HASH_TABLE_CAPACITY 128
 
-class HashNode
+
+struct TableEntry
 {
-public:
-    HashNode(int key, int value);
-    
-public:
     int m_Key;
     int m_Value;
 };
@@ -17,19 +15,21 @@ class HashTable
 {
 public:
     HashTable();
+    ~HashTable();
 
-    void PrintHashtable();
+    void Print();
+
+    void AddEntry(int key, int value);
+    void RemoveElement(int key);
     
     int GetElementByKey(int key);
 
-    void InsertElement(int key, int value);
-    void RemoveElement(int key);
 
 private:
     int HashFunction(int key);
 
 
 public:
-    HashNode** m_Array;
+    TableEntry** m_Array;
 
 };

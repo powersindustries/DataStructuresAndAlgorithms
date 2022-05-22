@@ -8,43 +8,67 @@
 // ----------------------------------------------------------------
 DynamicArray::DynamicArray()
 {
-    m_Array        = new int[2];
-    m_Capacity     = 2;
-    m_ElementCount = 0;
+    m_Array = new int[DEFAULT_ARRAY_SIZE];
+
+    m_Capacity = DEFAULT_ARRAY_SIZE;
+    m_Size = 0;
 }
 
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-void DynamicArray::Push(int data)
+DynamicArray::~DynamicArray()
 {
-    if (m_ElementCount == m_Capacity)
+    delete[] m_Array;
+}
+
+
+// ----------------------------------------------------------------
+// ----------------------------------------------------------------
+void DynamicArray::PushBack(int data)
+{
+    if (m_Size == m_Capacity)
     {
-        int* tempArray = new int[2 * m_Capacity];
-
-        for (int x = 0; x < m_Capacity; ++x)
-        {
-            tempArray[x] = m_Array[x];
-        }
-
-        delete[] m_Array;
-
-        m_Capacity = m_Capacity * 2;
-        m_Array = tempArray;
+        IncreaseMemory();
     }
 
-    m_Array[m_ElementCount] = data;
-    m_ElementCount++;
+    m_Array[m_Size] = data;
+    m_Size++;
 }
 
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-void DynamicArray::Push(int data, int index)
+void DynamicArray::Emplace(int index, int data)
 {
     if (index == m_Capacity)
     {
-        Push(data);
+        PushBack(data);
+        return;
+    }
+
+    if ((m_Size + 1) >= m_Capacity)
+    {
+        IncreaseMemory();
+    }
+
+    for (int x = m_Size; x > index; --x)
+    {
+        m_Array[x] = m_Array[x - 1];
+    }
+
+    m_Array[index] = data;
+    m_Size++;
+}
+
+
+// ----------------------------------------------------------------
+// ----------------------------------------------------------------
+void DynamicArray::Insert(int index, int data)
+{
+    if (index == m_Capacity)
+    {
+        PushBack(data);
         return;
     }
 
@@ -54,32 +78,13 @@ void DynamicArray::Push(int data, int index)
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-void DynamicArray::InsertElement(int data, int index)
+void DynamicArray::RemoveAt(int index)
 {
-    if (index == m_Capacity)
+    if (index > -1 && index < m_Size)
     {
-        Push(data);
-    }
+        m_Size--;
 
-    for (int x = m_ElementCount; x > index; --x)
-    {
-        m_Array[x] = m_Array[x - 1];
-    }
-
-    m_Array[index] = data;
-    m_ElementCount++;
-}
-
-
-// ----------------------------------------------------------------
-// ----------------------------------------------------------------
-void DynamicArray::Pop(int index)
-{
-    if (index > -1 && index < m_ElementCount)
-    {
-        m_ElementCount--;
-
-        for (int x = index; x < m_ElementCount; ++x)
+        for (int x = index; x < m_Size; ++x)
         {
             m_Array[x] = m_Array[x + 1];
         }
@@ -91,8 +96,8 @@ void DynamicArray::Pop(int index)
 // ----------------------------------------------------------------
 int DynamicArray::Pop()
 {
-    int currentElement = m_Array[m_ElementCount - 1];
-    m_ElementCount--;
+    int currentElement = m_Array[m_Size - 1];
+    m_Size--;
 
     return currentElement;
 }
@@ -100,7 +105,7 @@ int DynamicArray::Pop()
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-int DynamicArray::GetValueByIndex(int index)
+const int DynamicArray::GetValueAt(const int index)
 {
     if (index > -1 && index < m_Capacity)
     {
@@ -113,21 +118,22 @@ int DynamicArray::GetValueByIndex(int index)
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-int DynamicArray::Length()
+void DynamicArray::IncreaseMemory()
 {
-    return m_ElementCount;
-}
+    const int newCapacity = m_Capacity * DEFAULT_ARRAY_SIZE;
 
+    std::cout << "NOTE: Size Increased from " << m_Capacity << " to " << newCapacity << std::endl;
 
-// ----------------------------------------------------------------
-// ----------------------------------------------------------------
-void DynamicArray::PrintArrayValues(int array[], int size)
-{
-    for (int x = 0; x < size; ++x)
+    int* tempArray = new int[newCapacity];
+    for (int x = 0; x < m_Capacity; ++x)
     {
-        std::cout << array[x] << ", ";
+        tempArray[x] = m_Array[x];
     }
-    std::cout << std::endl;
+
+    m_Capacity = newCapacity;
+
+    delete[] m_Array;
+    m_Array = tempArray;
 }
 
 
@@ -135,9 +141,9 @@ void DynamicArray::PrintArrayValues(int array[], int size)
 // ----------------------------------------------------------------
 void DynamicArray::Print()
 {
-    for (int x = 0; x < m_ElementCount; ++x)
+    for (int x = 0; x < m_Size; ++x)
     {
-        std::cout << m_Array[x] << "\t";
+        std::cout << m_Array[x] << " ";
     }
     std::cout << std::endl;
 }

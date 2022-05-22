@@ -4,18 +4,17 @@
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-StackNode::StackNode(int data)
+Stack::Stack()
 {
-    m_Data = data;
-    m_NextNode = NULL;
+    m_TopNode = nullptr;
 }
 
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-Stack::Stack()
+Stack::~Stack()
 {
-    m_TopNode = NULL;
+    delete m_TopNode;
 }
 
 
@@ -23,9 +22,10 @@ Stack::Stack()
 // ----------------------------------------------------------------
 void Stack::Push(int data)
 {
-    StackNode* newNode = new StackNode(data);
+    StackNode* newNode = new StackNode();
+    newNode->m_Data = data;
 
-    if (m_TopNode == NULL)
+    if (m_TopNode == nullptr)
     {
         m_TopNode = newNode;
         return;
@@ -40,16 +40,15 @@ void Stack::Push(int data)
 // ----------------------------------------------------------------
 void Stack::Pop()
 {
-    if (m_TopNode == NULL)
+    if (m_TopNode == nullptr)
     {
         std::cout << "Stack Under-Flow or Empty" << std::endl;
         return;
     }
 
     StackNode* currentNode = m_TopNode;
-    std::cout << m_TopNode->m_Data << std::endl;
     m_TopNode = m_TopNode->m_NextNode;
-    free(currentNode);
+    delete currentNode;
 }
 
 
@@ -57,16 +56,16 @@ void Stack::Pop()
 // ----------------------------------------------------------------
 void Stack::Print()
 {
-    if (m_TopNode == NULL)
+    if (m_TopNode == nullptr)
     {
         std::cout << "Empty Stack Please push elements" << std::endl;
         return;
     }
 
     StackNode* tempNode = m_TopNode;
-    while (tempNode != NULL)
+    while (tempNode != nullptr)
     {
-        std::cout << tempNode->m_Data << ", ";
+        std::cout << tempNode->m_Data << " ";
         tempNode = tempNode->m_NextNode;
     }
     std::cout << std::endl;
@@ -77,8 +76,16 @@ void Stack::Print()
 // ----------------------------------------------------------------
 ArrayStack::ArrayStack()
 {
-    m_Top = -1;
     m_Array = new int[128];
+    m_TopIndex = -1;
+}
+
+
+// ----------------------------------------------------------------
+// ----------------------------------------------------------------
+ArrayStack::~ArrayStack()
+{
+    delete m_Array;
 }
 
 
@@ -86,30 +93,28 @@ ArrayStack::ArrayStack()
 // ----------------------------------------------------------------
 void ArrayStack::Push(int data)
 {
-    if (m_Top > SIZE_MAX)
+    if (m_TopIndex > SIZE_MAX)
     {
         std::cout << "Stack Over-Flows" << std::endl;
         return;
     }
 
-    m_Top = m_Top + 1;
-    m_Array[m_Top] = data;
+    m_TopIndex = m_TopIndex + 1;
+    m_Array[m_TopIndex] = data;
 }
 
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-int ArrayStack::Pop()
+void ArrayStack::Pop()
 {
-    if (m_Top == -1)
+    if (m_TopIndex < 0)
     {
         std::cout << "Stack Under-Flow" << std::endl;
-        return 0;
+        return;
     }
 
-    int data = m_Array[m_Top];
-    m_Top--;
-    return data;
+    m_TopIndex--;
 }
 
 
@@ -117,27 +122,23 @@ int ArrayStack::Pop()
 // ----------------------------------------------------------------
 int ArrayStack::Peek()
 {
-    return m_Array[m_Top];
+    return m_Array[m_TopIndex];
 }
 
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-void ArrayStack::Display()
+void ArrayStack::Print()
 {
-    if (m_Top >= 0)
-    {
-        std::cout << "The Stack elements are: " << std::endl;
-
-        for (int x = m_Top; x >= 0; --x)
-        {
-            std::cout << m_Array[x] << ", ";
-        }
-        std::cout << std::endl;
-    }
-    else
+    if (m_TopIndex < 0)
     {
         std::cout << "Please Fill the elements first" << std::endl;
         return;
     }
+
+    for (int x = m_TopIndex; x >= 0; --x)
+    {
+        std::cout << m_Array[x] << " ";
+    }
+    std::cout << std::endl;
 }

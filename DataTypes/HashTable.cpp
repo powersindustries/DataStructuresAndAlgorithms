@@ -1,26 +1,24 @@
 #include "HashTable.h"
-#include <map>
-
-
-// ----------------------------------------------------------------
-// ----------------------------------------------------------------
-HashNode::HashNode(int key, int value)
-{
-    m_Key = key;
-    m_Value = value;
-}
 
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
 HashTable::HashTable()
 {
-    m_Array = new HashNode * [128];
+    m_Array = new TableEntry * [HASH_TABLE_CAPACITY];
 
-    for (int x = 0; x < 128; ++x)
+    for (int x = 0; x < HASH_TABLE_CAPACITY; ++x)
     {
-        m_Array[x] = NULL;
+        m_Array[x] = nullptr;
     }
+}
+
+
+// ----------------------------------------------------------------
+// ----------------------------------------------------------------
+HashTable::~HashTable()
+{
+    delete[] m_Array;
 }
 
 
@@ -28,29 +26,31 @@ HashTable::HashTable()
 // ----------------------------------------------------------------
 int HashTable::HashFunction(int key)
 {
-    return key % 128; // Open addressing
+    return key % HASH_TABLE_CAPACITY; // Open addressing
 }
 
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-void HashTable::InsertElement(int key, int value)
+void HashTable::AddEntry(int key, int value)
 {
     int hashedKey = HashFunction(key);
 
-    while (m_Array[hashedKey] != NULL && m_Array[hashedKey]->m_Key != key)
+    while (m_Array[hashedKey] != nullptr && m_Array[hashedKey]->m_Key != key)
     {
         hashedKey = HashFunction(hashedKey + 1);
     }
 
     // Delete pair if the key already exists
-    if (m_Array[hashedKey] != NULL)
+    if (m_Array[hashedKey] != nullptr)
     {
         delete m_Array[hashedKey];
     }
 
     // Create new hashnode
-    m_Array[hashedKey] = new HashNode(key, value);
+    m_Array[hashedKey] = new TableEntry();
+    m_Array[hashedKey]->m_Key = key;
+    m_Array[hashedKey]->m_Value = value;
 }
 
 
@@ -60,38 +60,29 @@ void HashTable::RemoveElement(int key)
 {
     int hashedKey = HashFunction(key);
 
-    if (m_Array[hashedKey] == NULL)
+    if (m_Array[hashedKey] == nullptr)
     {
         std::cout << "Element is DNE" << std::endl;
         return;
     }
 
-    while (m_Array[hashedKey] != NULL)
-    {
-        if (m_Array[hashedKey]->m_Key == key)
-        {
-            break;
-        }
-        hashedKey = HashFunction(hashedKey + 1);
-    }
-
-    delete m_Array[hashedKey];
-
-    std::cout << "Element Deleted" << std::endl;
+    m_Array[hashedKey] = nullptr;
 }
 
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-void HashTable::PrintHashtable()
+void HashTable::Print()
 {
-    for (int x = 0; x < 128; ++x)
+    for (int x = 0; x < HASH_TABLE_CAPACITY; ++x)
     {
-        if (m_Array[x] != NULL && m_Array[x]->m_Key != -1)
+        if (m_Array[x] != nullptr)
         {
-            std::cout << m_Array[x]->m_Key << ", " << m_Array[x]->m_Value << std::endl;
+            std::cout << "(" << m_Array[x]->m_Key << "," << m_Array[x]->m_Value << ") ";
         }
     }
+
+    std::cout << std::endl;
 }
 
 
@@ -101,12 +92,12 @@ int HashTable::GetElementByKey(int key)
 {
     int hashedKey = HashFunction(key);
 
-    while (m_Array[hashedKey] != NULL && m_Array[hashedKey]->m_Key != key)
+    while (m_Array[hashedKey] != nullptr && m_Array[hashedKey]->m_Key != key)
     {
         hashedKey = HashFunction(hashedKey + 1);
     }
 
-    if (m_Array[hashedKey] == NULL)
+    if (m_Array[hashedKey] == nullptr)
     {
         return -1;
     }
