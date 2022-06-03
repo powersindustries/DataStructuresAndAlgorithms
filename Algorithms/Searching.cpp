@@ -1,5 +1,6 @@
 #include "Searching.h"
 #include <iostream>
+#include <algorithm>
 
 
 // ----------------------------------------------------------------
@@ -16,15 +17,19 @@ int Searching::BinarySearch(int array[], int size, int value)
     int lowValue = 0;
     int highValue = size - 1;
 
+    // sort array
+    std::sort(array, array + size);
+
     while (lowValue <= highValue)
     {
-        int midIndex = (lowValue + highValue) / 2;
+        int midIndex = lowValue + (highValue - lowValue) / 2;
 
         if (array[midIndex] == value)
         {
             return midIndex;
         }
-        else if (array[midIndex] < value)
+        
+        if (array[midIndex] < value)
         {
             lowValue = midIndex + 1;
         }
@@ -33,7 +38,7 @@ int Searching::BinarySearch(int array[], int size, int value)
             highValue = midIndex - 1;
         }
     }
-    return 0; // Value wasnt found
+    return -1; // Value wasnt found
 }
 
 
@@ -43,6 +48,14 @@ BFSGraph::BFSGraph(int vertices)
 {
     m_VerticeCount = vertices;
     m_Nodes = new std::list<int>[m_VerticeCount];
+}
+
+
+// ----------------------------------------------------------------
+// ----------------------------------------------------------------
+BFSGraph::~BFSGraph()
+{
+    delete[] m_Nodes;
 }
 
 
@@ -97,6 +110,13 @@ void BFSGraph::BreadthFirstSearch(int value)
 DFSGraph::DFSGraph(int vertices)
 {
     m_VerticeCount = vertices;
+}
+
+
+// ----------------------------------------------------------------
+// ----------------------------------------------------------------
+DFSGraph::~DFSGraph()
+{
 }
 
 

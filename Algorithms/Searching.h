@@ -16,10 +16,12 @@ class BFSGraph
 {
 public:
     BFSGraph(int vertices);
+    ~BFSGraph();
 
     void AddEdge(int start, int end);
 
     void BreadthFirstSearch(int value);
+
 
 public:
     std::list<int> *m_Nodes;
@@ -32,11 +34,14 @@ class DFSGraph
 {
 public:
     DFSGraph(int vertices);
+    ~DFSGraph();
 
     void DepthFirstSearch(int graph[4][4], int search);
-    
+
+
 private:
     void DFSUtil(int graph[4][4], bool visited[], int search);
+
 
 public:
     int m_VerticeCount;

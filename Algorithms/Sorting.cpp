@@ -71,20 +71,12 @@ void Sorting::SelectionSort(int array[], int size)
             {
                 minIndex = y;
             }
-
-            SelectionSortSwap(&array[minIndex], &array[x]);
         }
+
+        int tempValue = array[minIndex];
+        array[minIndex] = array[x];
+        array[x] = tempValue;
     }
-}
-
-
-// ----------------------------------------------------------------
-// ----------------------------------------------------------------
-void Sorting::SelectionSortSwap(int* value1, int* value2)
-{
-    int tempValue = *value1;
-    *value1 = *value2;
-    *value2 = tempValue;
 }
 
 
@@ -110,61 +102,6 @@ void Sorting::InsertionSort(int array[], int size)
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-void Sorting::MergeSortMergeArrays(int array[], int lowValue, int midValue, int highValue)
-{
-    const int size1 = midValue - lowValue + 1;
-    const int size2 = highValue - midValue;
-
-    int* leftArr  = new int[size1];
-    int* rightArr = new int[size2];
-
-    int index      = lowValue; // index traversing in original Array
-    int indexLeft  = 0; // index traversing in leftArray
-    int indexRight = 0; // index traversing in rightArray
-
-    for (int i = 0; i < size1; i++)
-    {
-        leftArr[i] = array[lowValue + i];
-    }
-    
-    for (int j = 0; j < size2; j++)
-    {
-        rightArr[j] = array[midValue + 1 + j];
-    }
-
-    while (indexLeft < size1 && indexRight < size2)
-    {
-        if (leftArr[indexLeft] <= rightArr[indexRight])
-        {
-            array[index] = leftArr[indexLeft];
-            indexLeft++;
-        }
-        else
-        {
-            array[index] = rightArr[indexRight];
-            indexRight++;
-        }
-        index++;
-    }
-    
-    while (indexLeft < size1)
-    {
-        array[index] = leftArr[indexLeft];
-        indexLeft++;
-        index++;
-    }
-    
-    while (indexRight < size2)
-    {
-        array[index] = rightArr[indexRight];
-        indexRight++;
-        index++;
-    }
-}
-
-
-// ----------------------------------------------------------------
-// ----------------------------------------------------------------
 void Sorting::MergeSort(int array[], int lowValue, int highValue)
 {
     if (lowValue < highValue)
@@ -173,7 +110,6 @@ void Sorting::MergeSort(int array[], int lowValue, int highValue)
 
         MergeSort(array, lowValue, midValue);
         MergeSort(array, midValue + 1, highValue);
-
         MergeSortMergeArrays(array, lowValue, midValue, highValue);
     }
 }
@@ -181,47 +117,99 @@ void Sorting::MergeSort(int array[], int lowValue, int highValue)
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-int Sorting::QuickSort(int a[], int lowIndex, int highIndex)
+void Sorting::MergeSortMergeArrays(int array[], int lowValue, int midValue, int highValue)
 {
-    int pIndex = 0;
+    const int size1 = midValue - lowValue + 1;
+    const int size2 = highValue - midValue;
 
-    if (lowIndex < highIndex)
+    int* leftArray  = new int[size1];
+    int* rightArray = new int[size2];
+
+    int index      = lowValue; // index for original Array
+    int indexLeft  = 0;        // index for leftArray
+    int indexRight = 0;        // index for rightArray
+
+    for (int i = 0; i < size1; i++)
     {
-        pIndex = QuickSortPartition(a, lowIndex, highIndex);
-        QuickSort(a, lowIndex, highIndex);
-        QuickSort(a, pIndex + 1, highIndex);
+        leftArray[i] = array[lowValue + i];
+    }
+    
+    for (int j = 0; j < size2; j++)
+    {
+        rightArray[j] = array[midValue + 1 + j];
     }
 
-    return 0;
+    while (indexLeft < size1 && indexRight < size2)
+    {
+        if (leftArray[indexLeft] <= rightArray[indexRight])
+        {
+            array[index] = leftArray[indexLeft];
+            indexLeft++;
+        }
+        else
+        {
+            array[index] = rightArray[indexRight];
+            indexRight++;
+        }
+        index++;
+    }
+    
+    while (indexLeft < size1)
+    {
+        array[index] = leftArray[indexLeft];
+        indexLeft++;
+        index++;
+    }
+    
+    while (indexRight < size2)
+    {
+        array[index] = rightArray[indexRight];
+        indexRight++;
+        index++;
+    }
+
+    delete[] leftArray;
+    delete[] rightArray;
 }
 
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-int Sorting::QuickSortPartition(int a[], int lowIndex, int highIndex)
+void Sorting::QuickSort(int array[], int lowIndex, int highIndex)
+{
+    if (lowIndex < highIndex)
+    {
+        int pIndex = QuickSortPartition(array, lowIndex, highIndex);
+        QuickSort(array, lowIndex, pIndex - 1);
+        QuickSort(array, pIndex + 1, highIndex);
+    }
+}
+
+
+// ----------------------------------------------------------------
+// ----------------------------------------------------------------
+int Sorting::QuickSortPartition(int array[], int lowIndex, int highIndex)
 {
     int pivot = highIndex;
     int index = lowIndex;
 
     for (int x = lowIndex; x < highIndex; ++x)
     {
-        if (a[x] < a[pivot])
+        if (array[x] < array[pivot])
         {
-            PartitionSwap(&a[x], &a[index]);
+            // Update pivot index
+            int tempValue = array[x];
+            array[x] = array[index];
+            array[index] = tempValue;
+            
             index++;
         }
     }
+    
+    // Swap pivot with index
+    int tempValue = array[pivot];
+    array[pivot] = array[index];
+    array[index] = tempValue;
 
-    PartitionSwap(&a[pivot], &a[index]);
     return index;
-}
-
-
-// ----------------------------------------------------------------
-// ----------------------------------------------------------------
-void Sorting::PartitionSwap(int* val1, int* val2)
-{
-    int tempValue = *val1;
-    *val1 = *val2;
-    *val2 = tempValue;
 }
