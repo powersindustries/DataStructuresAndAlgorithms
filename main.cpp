@@ -4,6 +4,7 @@
 #include "DataTypes/HashTable.h"
 #include "DataTypes/BinarySearchTree.h"
 #include "DataTypes/DynamicArray.h"
+#include "DataTypes/Graphs/DisjointSet.h"
 
 int main()
 {
@@ -148,6 +149,21 @@ int main()
     hashTable.Print();
 
     std::cout << "Value at 1 is " << hashTable.GetElementByKey(1) << std::endl;
+
+    DisjointSet uf(10);
+	// 1-2-5-6-7 3-8-9 4
+	uf.AddUnionSet(1, 2);
+	uf.AddUnionSet(2, 5);
+	uf.AddUnionSet(5, 6);
+	uf.AddUnionSet(6, 7);
+	uf.AddUnionSet(3, 8);
+	uf.AddUnionSet(8, 9);
+	std::cout << uf.VertexConnected(1, 5) << std::endl;  // true
+	std::cout << uf.VertexConnected(5, 7) << std::endl;  // true
+	std::cout << uf.VertexConnected(4, 9) << std::endl;  // false
+	// 1-2-5-6-7 3-8-9-4
+	uf.AddUnionSet(9, 4);
+	std::cout << uf.VertexConnected(4, 9) << std::endl;  // true
 
     return 0;
 }

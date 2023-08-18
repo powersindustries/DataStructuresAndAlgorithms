@@ -16,8 +16,6 @@ set(SOURCE_FILES
     DataTypes/BinarySearchTree.cpp
     DataTypes/DynamicArray.h
     DataTypes/DynamicArray.cpp
-    DataTypes/Graph.h
-    DataTypes/Graph.cpp
     DataTypes/HashTable.h
     DataTypes/HashTable.cpp
     DataTypes/LinkedLists.h
@@ -25,6 +23,10 @@ set(SOURCE_FILES
     DataTypes/Stack.h
     DataTypes/Stack.cpp
 
+    DataTypes/Graphs/Graph.h
+    DataTypes/Graphs/Graph.cpp
+    DataTypes/Graphs/DisjointSet.h
+    DataTypes/Graphs/DisjointSet.cpp
 )
 
 add_executable(DataAlgorithms  ${SOURCE_FILES})
