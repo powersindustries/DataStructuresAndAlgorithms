@@ -22,6 +22,8 @@ set(SOURCE_FILES
     DataTypes/LinkedLists.cpp
     DataTypes/Stack.h
     DataTypes/Stack.cpp
+    DataTypes/Deque.h
+    DataTypes/Deque.cpp
 
     DataTypes/Graphs/Graph.h
     DataTypes/Graphs/Graph.cpp
