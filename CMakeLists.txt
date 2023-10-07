@@ -24,6 +24,8 @@ set(SOURCE_FILES
     DataTypes/Stack.cpp
     DataTypes/Deque.h
     DataTypes/Deque.cpp
+    DataTypes/Queue.h
+    DataTypes/Queue.cpp
 
     DataTypes/Graphs/Graph.h
     DataTypes/Graphs/Graph.cpp
