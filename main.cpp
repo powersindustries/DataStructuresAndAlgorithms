@@ -16,7 +16,7 @@ int main()
 
     // Single Linked List Example
     std::cout << "Single Linked List" << std::endl;
-    SingleLinkedList SingleLL;
+    SingleLinkedList<int> SingleLL;
     SingleLL.AddNodeToEnd(0);
     SingleLL.AddNodeToEnd(1);
     SingleLL.AddNodeToEnd(2);
@@ -37,7 +37,7 @@ int main()
 
     // Double Linked List Example
     std::cout << "Double Linked List" << std::endl;
-    DoubleLinkedList DoubleLL;
+    DoubleLinkedList<int> DoubleLL;
     DoubleLL.AddNodeToEnd(0);
     DoubleLL.AddNodeToEnd(1);
     DoubleLL.AddNodeToEnd(2);
@@ -61,7 +61,7 @@ int main()
 
     // Stack Example
     std::cout << "Stack" << std::endl;
-    Stack stack;
+    Stack<int> stack;
     stack.Push(0);
     stack.Push(1);
     stack.Push(2);
@@ -79,7 +79,7 @@ int main()
 
     // Array Stack Example
     std::cout << "Array Stack" << std::endl;
-    ArrayStack arrayStack;
+    ArrayStack<int> arrayStack;
     arrayStack.Push(0);
     arrayStack.Push(1);
     arrayStack.Push(2);
@@ -97,7 +97,7 @@ int main()
 
     // Binary Search Tree Example
     std::cout << "Binary Search Tree" << std::endl;
-    BinarySearchTree BST;
+    BinarySearchTree<int> BST;
     BST.Insert(0);
     BST.Insert(1);
     BST.Insert(2);
@@ -113,7 +113,7 @@ int main()
 
     // Dynamic Arrays Example
     std::cout << "Dynamic Array" << std::endl;
-    DynamicArray DArray;
+    DynamicArray<int> DArray;
     DArray.PushBack(0);
     DArray.PushBack(1);
     DArray.PushBack(2);
@@ -138,7 +138,7 @@ int main()
 
     // Hash Table Example
     std::cout << "Hash Table" << std::endl;
-    HashTable hashTable;
+    HashTable<int> hashTable;
     hashTable.AddEntry(0,0);
     hashTable.AddEntry(1,1);
     hashTable.AddEntry(2,2);
@@ -150,20 +150,20 @@ int main()
 
     std::cout << "Value at 1 is " << hashTable.GetElementByKey(1) << std::endl;
 
-    DisjointSet uf(10);
-	// 1-2-5-6-7 3-8-9 4
-	uf.AddUnionSet(1, 2);
-	uf.AddUnionSet(2, 5);
-	uf.AddUnionSet(5, 6);
-	uf.AddUnionSet(6, 7);
-	uf.AddUnionSet(3, 8);
-	uf.AddUnionSet(8, 9);
-	std::cout << uf.VertexConnected(1, 5) << std::endl;  // true
-	std::cout << uf.VertexConnected(5, 7) << std::endl;  // true
-	std::cout << uf.VertexConnected(4, 9) << std::endl;  // false
-	// 1-2-5-6-7 3-8-9-4
-	uf.AddUnionSet(9, 4);
-	std::cout << uf.VertexConnected(4, 9) << std::endl;  // true
+    DisjointSet<int> disjointSet(10);
+	disjointSet.AddUnionSet(1, 2);
+	disjointSet.AddUnionSet(2, 5);
+	disjointSet.AddUnionSet(5, 6);
+	disjointSet.AddUnionSet(6, 7);
+	disjointSet.AddUnionSet(3, 8);
+	disjointSet.AddUnionSet(8, 9);
+
+    std::cout << disjointSet.VertexConnected(1, 5) << std::endl;  // true
+	std::cout << disjointSet.VertexConnected(5, 7) << std::endl;  // true
+	std::cout << disjointSet.VertexConnected(4, 9) << std::endl;  // false
+
+	disjointSet.AddUnionSet(9, 4);
+	std::cout << disjointSet.VertexConnected(4, 9) << std::endl;  // true
 
     return 0;
 }
